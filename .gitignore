@@ -1,0 +1,8 @@
+.env
+.env.local
+.env.*
+node_modules/
+.next/
+venv/
+__pycache__/
+last_response.json
