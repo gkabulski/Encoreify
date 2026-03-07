@@ -27,8 +27,8 @@ export default function UploadPage() {
             const formData = new FormData();
             formData.append("file", file);
 
-            // Call the FastAPI backend (running on localhost:8000 for now)
-            const res = await fetch("http://127.0.0.1:8000/api/parse-image", {
+            // Call the FastAPI backend on Render
+            const res = await fetch("https://encoreify.onrender.com/api/parse-image", {
                 method: "POST",
                 body: formData,
             });
