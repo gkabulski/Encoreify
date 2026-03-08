@@ -23,6 +23,14 @@ export async function POST(req: Request) {
             headers: { Authorization: `Bearer ${token}` },
         });
         const userData = await userRes.json();
+
+        if (!userRes.ok || userData.error) {
+            if (userRes.status === 401 || userData.error?.status === 401) {
+                return NextResponse.json({ error: "Spotify session expired" }, { status: 401 });
+            }
+            return NextResponse.json({ error: "Failed to authenticate with Spotify" }, { status: 401 });
+        }
+
         const userId = userData.id;
 
         // 2. Search for each track to get Spotify URIs

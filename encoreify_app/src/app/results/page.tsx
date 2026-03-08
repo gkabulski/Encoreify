@@ -58,6 +58,9 @@ export default function ResultsPage() {
                 alert(`Success! Playlist created with ${data.found_tracks} out of ${data.total_requested} requested tracks.\n\nOpening Spotify...`);
                 // Open the playlist in a new tab
                 window.open(data.playlistUrl, "_blank");
+            } else if (res.status === 401) {
+                alert("Your Spotify login has expired. You will be redirected to log in again!");
+                signIn("spotify");
             } else {
                 alert("Error: " + data.error);
             }
