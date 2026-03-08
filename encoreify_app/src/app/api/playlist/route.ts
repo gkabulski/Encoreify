@@ -10,7 +10,7 @@ export async function POST(req: Request) {
             return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
         }
 
-        const { tracks } = await req.json();
+        const { tracks, playlistName } = await req.json();
 
         if (!tracks || !Array.isArray(tracks) || tracks.length === 0) {
             return NextResponse.json({ error: "No tracks provided" }, { status: 400 });
@@ -49,8 +49,8 @@ export async function POST(req: Request) {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                name: `Encoreify: ${new Date().toLocaleDateString()}`,
-                description: "Created automatically from a concert programme photo via Encoreify.",
+                name: playlistName || `Encoreify: ${new Date().toLocaleDateString()}`,
+                description: "Created automatically from a concert programme photo via Encorify.vercel.app",
                 public: true
             })
         });

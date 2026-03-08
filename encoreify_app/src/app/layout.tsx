@@ -26,8 +26,11 @@ export default function RootLayout({
         <main className="flex-1 flex flex-col items-center p-6 sm:p-12 w-full max-w-3xl mx-auto">
           <Providers>{children}</Providers>
         </main>
-        <footer className="p-6 text-center text-zinc-500 text-sm">
-          &copy; {new Date().getFullYear()} Encoreify
+        <footer className="p-6 text-center space-y-2 text-zinc-500 text-sm">
+          <p>&copy; {new Date().getFullYear()} Encoreify</p>
+          <p>
+            If you like this app, consider <a href="https://buymeacoffee.com/temporalny" target="_blank" rel="noopener noreferrer" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-4">buying me a coffee</a>
+          </p>
         </footer>
       </body>
     </html>

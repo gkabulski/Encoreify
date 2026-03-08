@@ -7,6 +7,7 @@ import { MusicalNoteIcon, PlusIcon } from "@heroicons/react/24/solid";
 
 export default function ResultsPage() {
     const [tracks, setTracks] = useState<string[]>([]);
+    const [playlistName, setPlaylistName] = useState("");
     const [isCreating, setIsCreating] = useState(false);
     const { data: session } = useSession();
     const router = useRouter();
@@ -46,7 +47,10 @@ export default function ResultsPage() {
             const res = await fetch("/api/playlist", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ tracks: tracks.filter(t => t.trim() !== "") }), // remove empty strings
+                body: JSON.stringify({
+                    tracks: tracks.filter(t => t.trim() !== ""),
+                    playlistName: playlistName.trim()
+                }),
             });
 
             const data = await res.json();
@@ -108,7 +112,18 @@ export default function ResultsPage() {
                 </button>
             </div>
 
-            <div className="pt-8 border-t border-zinc-800/50">
+            <div className="pt-8 border-t border-zinc-800/50 space-y-4">
+                <div className="space-y-2">
+                    <label htmlFor="playlistName" className="text-sm font-medium text-zinc-400">Playlist Name (Optional)</label>
+                    <input
+                        id="playlistName"
+                        type="text"
+                        value={playlistName}
+                        onChange={(e) => setPlaylistName(e.target.value)}
+                        placeholder={`Encoreify: ${new Date().toLocaleDateString()}`}
+                        className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-3 text-zinc-100 placeholder-zinc-700 outline-none focus:border-emerald-500 transition-colors"
+                    />
+                </div>
                 <button
                     onClick={handleConnectSpotify}
                     disabled={isCreating}
