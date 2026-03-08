@@ -1,13 +1,22 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { PhotoIcon, DocumentArrowUpIcon, ArrowPathIcon } from "@heroicons/react/24/outline";
+
+const PROGRESS_MESSAGES = [
+    "Uploading image...",
+    "Scanning concert programme...",
+    "Identifying composers and pieces...",
+    "Extracting track data...",
+    "Finalizing playlist..."
+];
 
 export default function UploadPage() {
     const [file, setFile] = useState<File | null>(null);
     const [preview, setPreview] = useState<string | null>(null);
     const [isUploading, setIsUploading] = useState(false);
+    const [messageIndex, setMessageIndex] = useState(0);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const router = useRouter();
 
@@ -18,6 +27,18 @@ export default function UploadPage() {
             setPreview(URL.createObjectURL(selectedFile));
         }
     };
+
+    useEffect(() => {
+        let interval: NodeJS.Timeout;
+        if (isUploading) {
+            interval = setInterval(() => {
+                setMessageIndex((prev) => Math.min(prev + 1, PROGRESS_MESSAGES.length - 1));
+            }, 2500); // Change message every 2.5 seconds, but stop at the last one
+        } else {
+            setMessageIndex(0);
+        }
+        return () => clearInterval(interval);
+    }, [isUploading]);
 
     const handleUpload = async () => {
         if (!file) return;
@@ -102,7 +123,7 @@ export default function UploadPage() {
                     {isUploading ? (
                         <>
                             <ArrowPathIcon className="w-6 h-6 animate-spin" />
-                            <span>Analyzing Image...</span>
+                            <span>{PROGRESS_MESSAGES[messageIndex]}</span>
                         </>
                     ) : (
                         <>
